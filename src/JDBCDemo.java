@@ -20,16 +20,18 @@ public class JDBCDemo {
             System.out.println("4 - prikaz svih drzava sortiranih po nazivu");
             System.out.println("5 - kraj");
             System.out.println("----------------------------------");
+            System.out.println("Unesite odabir:");
 
             int odabir = Integer.parseInt(scanner.nextLine());
 
             try (Connection connection = dataSource.getConnection()) {
                 Statement stmt = connection.createStatement();
+
                 switch (odabir) {
                     case 1:
                         System.out.println("Unesite naziv drzave:");
-                        String naziv = scanner.nextLine();
-                        int rowsInserted = stmt.executeUpdate("INSERT INTO Drzava (Naziv)  VALUES ('" + naziv + "')");
+                        String nazivInsert = scanner.nextLine();
+                        int rowsInserted = stmt.executeUpdate("INSERT INTO Drzava (Naziv)  VALUES ('" + nazivInsert + "')");
                         System.out.println("Dodano drzava: " + rowsInserted);
                         break;
 
@@ -37,9 +39,8 @@ public class JDBCDemo {
                         System.out.println("Unesite ID drzave:");
                         int idUpdate = Integer.parseInt(scanner.nextLine());
                         System.out.println("Unesite novi naziv drzave:");
-                        String nazivNovi = scanner.nextLine();
-                        int rowsUpdated = stmt.executeUpdate(
-                                "UPDATE Drzava SET Naziv = '" + nazivNovi + "' WHERE IdDrzava = " + idUpdate);
+                        String nazivUpdate = scanner.nextLine();
+                        int rowsUpdated = stmt.executeUpdate("UPDATE Drzava SET Naziv = '" + nazivUpdate + "' WHERE IdDrzava = " + idUpdate);
                         System.out.println("Azurirano drzava: " + rowsUpdated);
                         break;
 
@@ -49,6 +50,7 @@ public class JDBCDemo {
                         int rowsDeleted= stmt.executeUpdate("DELETE FROM Drzava WHERE IdDrzava = " + idDelete);
                         System.out.println("Obrisano drzava: " + rowsDeleted);
                         break;
+
                     case 4:
                         ResultSet rs = stmt.executeQuery("SELECT IdDrzava, Naziv FROM Drzava ORDER BY Naziv ASC");
                         while (rs.next()) {
